@@ -6,9 +6,10 @@ from django.db.migrations.state import ProjectState
 from django.apps import apps
 from django.db.migrations.writer import MigrationWriter
 from django.forms.fields import ChoiceField
+from django.utils.encoding import force_text
 
 from softchoice.fields.language import LanguageField
-from tests.models import Model
+from tests.models import Dummy
 
 
 def test_migration():
@@ -34,7 +35,7 @@ def test_migration():
     'timezone',
 ])
 def test_field(field):
-    m = Model()
+    m = Dummy()
     formfield = m._meta.get_field(field).formfield()
     assert isinstance(formfield, ChoiceField)
     assert len(formfield.choices)
@@ -43,3 +44,13 @@ def test_field(field):
 def test_language_validation():
     with pytest.raises(ImproperlyConfigured):
         LanguageField(languages=['neenerneenerneener'])
+
+
+@pytest.mark.django_db
+def test_admin(admin_client):
+    content = force_text(admin_client.get('/admin/tests/dummy/add/', follow=True).content)
+    assert 'Finnish' in content
+    assert 'English' in content
+    assert 'Swedish' in content
+    assert 'oooooooooooo' in content
+    assert 'America/Chihuahua' in content  # it's apparently a common timezone

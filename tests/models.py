@@ -11,7 +11,7 @@ def generate_choices():
         yield [str(x), 'oo' * x]
 
 
-class Model(models.Model):
+class Dummy(models.Model):
     currency = CurrencyField(currencies=['EUR', 'USD', 'JPY'])
     language = LanguageField(languages=['en', 'fi', 'sv'])
     timezone = TimezoneField()
