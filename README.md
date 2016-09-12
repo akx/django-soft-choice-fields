@@ -2,6 +2,8 @@
 
 Choice fields that don't record the actual `choices` lists in migrations.
 
+[![Build Status](https://travis-ci.org/akx/django-soft-choice-fields.svg?branch=master)](https://travis-ci.org/akx/django-soft-choice-fields)
+
 ## Usage
 
 ### Class-based
