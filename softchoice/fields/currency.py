@@ -10,6 +10,7 @@ except ImportError:  # pragma: no cover
 
 class CurrencyField(SoftChoiceCharField):
     # TODO: add locale support to .formfield()
+
     def __init__(self, **kwargs):
         self.currencies = kwargs.pop('currencies', ('EUR',))
         kwargs.setdefault('max_length', 3)

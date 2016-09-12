@@ -2,6 +2,7 @@ from django.db import models
 
 
 class SoftChoiceMixin(object):
+
     def __init__(self, **kwargs):
         if callable(kwargs.get('choices')):
             self.construct_choices = kwargs['choices']

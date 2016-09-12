@@ -1,9 +1,9 @@
 import pytest
+from django.apps import apps
 from django.core.exceptions import ImproperlyConfigured
 from django.db.migrations.autodetector import MigrationAutodetector
 from django.db.migrations.loader import MigrationLoader
 from django.db.migrations.state import ProjectState
-from django.apps import apps
 from django.db.migrations.writer import MigrationWriter
 from django.forms.fields import ChoiceField
 from django.utils.encoding import force_text

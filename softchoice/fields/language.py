@@ -13,6 +13,7 @@ except ImportError:  # pragma: no cover
 
 class LanguageField(SoftChoiceCharField):
     # TODO: add locale support to .formfield()
+
     def __init__(self, **kwargs):
         kwargs.setdefault('max_length', 10)
         self.languages = kwargs.pop('languages', settings.LANGUAGES)
