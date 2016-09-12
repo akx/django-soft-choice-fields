@@ -1,10 +1,10 @@
 SECRET_KEY = 'x'
 USE_I18N = True
-SESSION_ENGINE = "django.contrib.sessions.backends.signed_cookies"
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.contenttypes',
     'django.contrib.auth',
+    'django.contrib.sessions',
     'tests',
 ]
 ROOT_URLCONF = 'tests.urls'
