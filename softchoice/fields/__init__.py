@@ -2,10 +2,11 @@ from django.db import models
 
 
 class SoftChoiceMixin(object):
+
     def __init__(self, **kwargs):
         if callable(kwargs.get('choices')):
             self.construct_choices = kwargs['choices']
-        kwargs['choices'] = self.construct_choices()
+        kwargs['choices'] = list(self.construct_choices())
         super(SoftChoiceMixin, self).__init__(**kwargs)
 
     def construct_choices(self):  # pragma: no cover

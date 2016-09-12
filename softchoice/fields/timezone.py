@@ -5,6 +5,7 @@ from . import SoftChoiceCharField
 
 class TimezoneField(SoftChoiceCharField):
     # TODO: add locale support to .formfield()
+
     def __init__(self, **kwargs):
         if 'timezones' not in kwargs:
             try:
