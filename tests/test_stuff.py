@@ -1,33 +1,22 @@
 import pytest
-from django.apps import apps
 from django.core.exceptions import ImproperlyConfigured
-from django.db.migrations.autodetector import MigrationAutodetector
-from django.db.migrations.loader import MigrationLoader
-from django.db.migrations.state import ProjectState
-from django.db.migrations.writer import MigrationWriter
 from django.forms.fields import ChoiceField
 from django.utils.encoding import force_text
 
+from softchoice.fields import SoftChoiceMixin
 from softchoice.fields.language import LanguageField
 from tests.models import Dummy
 
 
-def test_migration():
+def test_deconstruction():
     """
-    Test that migrations for soft choice fields don't include the `choices=` kwarg.
+    Test that deconstructions for soft choice fields don't include the `choices=` kwarg.
     """
-    loader = MigrationLoader(None, ignore_no_migrations=True)
-    autodetector = MigrationAutodetector(
-        loader.project_state(),
-        ProjectState.from_apps(apps),
-    )
-    changes = autodetector.changes(
-        graph=loader.graph,
-    )
-    writer = MigrationWriter(changes['tests'][0])
-    migration_string = writer.as_string()
-    assert b'choices=' not in migration_string
-    assert b'default=' not in migration_string
+    for field in Dummy._meta.get_fields():
+        if isinstance(field, SoftChoiceMixin):
+            kwargs = field.deconstruct()[3]
+            assert 'choices' not in kwargs
+            assert 'default' not in kwargs
 
 
 @pytest.mark.parametrize('field', [
