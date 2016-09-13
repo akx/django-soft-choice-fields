@@ -1,4 +1,5 @@
 from django.core.exceptions import ImproperlyConfigured
+from django.utils.six import string_types
 
 from . import SoftChoiceCharField
 
@@ -13,7 +14,11 @@ class TimezoneField(SoftChoiceCharField):
                 kwargs['timezones'] = pytz.common_timezones
             except ImportError:  # pragma: no cover
                 raise ImproperlyConfigured('either declare `timezones` for %r or install `pytz`' % self)
-        self.timezones = kwargs.pop('timezones', ())
+        self.timezones = list(kwargs.pop('timezones', ()))
+        if not all(isinstance(code, string_types) for code in self.timezones):
+            raise ImproperlyConfigured(
+                '`timezones` must be a list of timezone strings'
+            )
         kwargs.setdefault('max_length', 65)
         super(TimezoneField, self).__init__(**kwargs)
 

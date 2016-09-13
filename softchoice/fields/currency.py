@@ -1,3 +1,6 @@
+from django.core.exceptions import ImproperlyConfigured
+from django.utils.six import string_types
+
 from . import SoftChoiceCharField
 
 try:
@@ -12,7 +15,11 @@ class CurrencyField(SoftChoiceCharField):
     # TODO: add locale support to .formfield()
 
     def __init__(self, **kwargs):
-        self.currencies = kwargs.pop('currencies', ('EUR',))
+        self.currencies = list(kwargs.pop('currencies', ('EUR',)))
+        if not all(isinstance(code, string_types) for code in self.currencies):
+            raise ImproperlyConfigured(
+                '`currencies` must be a list of currency codes (strings)'
+            )
         kwargs.setdefault('max_length', 3)
         super(CurrencyField, self).__init__(**kwargs)
 

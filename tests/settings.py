@@ -1,3 +1,7 @@
+import os
+from tempfile import gettempdir
+
+DEBUG = True
 SECRET_KEY = 'x'
 USE_I18N = True
 INSTALLED_APPS = [
@@ -11,6 +15,7 @@ ROOT_URLCONF = 'tests.urls'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(gettempdir(), 'dsctest.sqlite3'),
     },
 }
 MIDDLEWARE_CLASSES = [
