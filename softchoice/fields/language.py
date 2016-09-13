@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
+from django.utils.six import text_type
 
 from . import SoftChoiceCharField
 
@@ -16,7 +17,11 @@ class LanguageField(SoftChoiceCharField):
 
     def __init__(self, **kwargs):
         kwargs.setdefault('max_length', 10)
-        self.languages = kwargs.pop('languages', settings.LANGUAGES)
+        kwargs.setdefault('default', getattr(settings, 'LANGUAGE_CODE', None))
+        self.languages = kwargs.pop('languages', None)
+        if self.languages is None:
+            self.languages = [code for (code, name) in settings.LANGUAGES]
+        self.languages = list(self.languages)
         if not all(len(code) <= kwargs['max_length'] for code in self.languages):
             raise ImproperlyConfigured(
                 'not all languages fit in max_length=%d characters' % kwargs['max_length']
