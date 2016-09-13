@@ -13,6 +13,6 @@ def generate_choices():
 
 class Dummy(models.Model):
     currency = CurrencyField(currencies=['EUR', 'USD', 'JPY'])
-    language = LanguageField(languages=['en', 'fi', 'sv'])
+    language = LanguageField(languages=['en', 'fi', 'sv'], default='fi')
     timezone = TimezoneField()
     custom = SoftChoiceCharField(max_length=20, choices=generate_choices)
