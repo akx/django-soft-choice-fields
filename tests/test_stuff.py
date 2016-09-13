@@ -27,6 +27,7 @@ def test_migration():
     writer = MigrationWriter(changes['tests'][0])
     migration_string = writer.as_string()
     assert b'choices=' not in migration_string
+    assert b'default=' not in migration_string
 
 
 @pytest.mark.parametrize('field', [
@@ -54,3 +55,14 @@ def test_admin(admin_client):
     assert 'Swedish' in content
     assert 'oooooooooooo' in content
     assert 'America/Chihuahua' in content  # it's apparently a common timezone
+
+
+@pytest.mark.parametrize('soft', (False, True))
+def test_soft_default(soft):
+    nsd_language_field = LanguageField(soft_default=soft, default='en')
+    kwargs = nsd_language_field.deconstruct()[3]
+    assert 'choices' not in kwargs
+    if soft:
+        assert 'default' not in kwargs
+    else:
+        assert kwargs['default'] == 'en'

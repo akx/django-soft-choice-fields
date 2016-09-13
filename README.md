@@ -32,6 +32,26 @@ class NiceModel(Model):
     field = SoftChoiceCharField(choices=construct_choices)
 ```
 
+### Soft defaults
+
+By default, soft choice fields also have soft `default`s (i.e. defaults
+are also not deconstructed into migrations).
+
+You can override this on a per-field basis by setting `soft_default=False`
+in the kwargs, or on the class level, as the class variable `soft_default`:
+ 
+```python
+class NiceChoiceField(SoftChoiceCharField):
+    soft_default = False
+
+class NiceModel(Model):
+    field = SoftChoiceCharField(
+        soft_default=False,
+        default='foo',  # Will be recorded in migration!
+        choices=...  # But these won't.
+    )
+```
+
 ## Predefined fields
 
 The predefined fields make use of several external libraries which are not
